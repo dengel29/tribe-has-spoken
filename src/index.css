@@ -76,7 +76,7 @@ body {
       transform: rotate(90deg);
 
       &:hover {
-        color: 1px solid cornflowerblue;
+        color: cornflowerblue;
       }
     }
 
