@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + Lit + TS</title>
+  <link rel="stylesheet" href="./src/index.css" />
+  <script type="module" src="/src/home-layout.ts"></script>
+  <script type="module" src="/src/side-bar.ts"></script>
+  <script type="module" src="/src/drop-zone.ts"></script>
+</head>
+
+<body>
+  <home-layout>
+    <div class="home">
+      <side-bar class="sidebar" data-action="">
+        <label for="open-namelist" data-target="home-layout.collapseLabel" data-action="click:home-layout#toggleText">
+        </label>
+        <input id="open-namelist" type="checkbox" style="opacity: 0" data-target="home-layout.collapseInput" checked />
+        <div class="name-list">
+          <label for="player-name">Insert a player name</label>
+          <input type="text" id="player-name" data-target="side-bar.survivorInput"
+            data-action="keydown:side-bar#addSurvivor" />
+          <ul id="name-list" data-target="side-bar.survivorList" data-action="dragstart:side-bar#handleDragStart 
+                            dragend:side-bar#handleDragEnd 
+                            click:side-bar#removePlayer">
+          </ul>
+        </div>
+      </side-bar>
+      <drop-zone class="content" data-target="home-layout.content"
+        data-action="updatecount:drop-zone#handleUpdateCount addzone:home-layout#handleAddZone">
+        <div class="vote-card">
+          <div class="vote-card__header">
+            <h1>Votes for:</h1>
+            <h1 contenteditable>
+              <h1 data-targets="drop-zone.count"></h1>
+          </div>
+          <div data-zone-id="1" class="dropzone" data-target="drop-zone.zone" data-targets="drop-zone.zones"
+            data-action="dragover:drop-zone#handleDragOver 
+                            drop:drop-zone#handleDrop 
+                            dragstart:drop-zone#handleDragStart
+                            dragleave:drop-zone#handleDragLeave">
+          </div>
+        </div>
+        <div class="vote-card">
+          <div class="vote-card__header">
+            <h1>Votes for:</h1>
+            <h1 contenteditable></h1>
+            <h1 data-targets="drop-zone.count"></h1>
+          </div>
+          <div class="dropzone" data-zone-id="2" data-target=" drop-zone.zone" data-targets="drop-zone.zones"
+            data-action="dragover:drop-zone#handleDragOver 
+                            drop:drop-zone#handleDrop 
+                            dragstart:drop-zone#handleDragStart 
+                            dragleave:drop-zone#handleDragLeave" style="position: relative">
+          </div>
+        </div>
+      </drop-zone>
+
+    </div>
+    <div class="buttons">
+      <button data-action="click:home-layout#addZone">Add Vote Area</button>
+    </div>
+  </home-layout>
+</body>
+
+</html>
