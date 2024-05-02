@@ -18,11 +18,14 @@
       <side-bar class="sidebar" data-action="">
         <label for="open-namelist" data-target="home-layout.collapseLabel" data-action="click:home-layout#toggleText">
         </label>
-        <input id="open-namelist" type="checkbox" style="opacity: 0" data-target="home-layout.collapseInput" checked />
+        <input name="open-namelist" id="open-namelist" type="checkbox" style="opacity: 0"
+          data-target="home-layout.collapseInput" checked />
         <div class="name-list">
           <label for="player-name">Insert a player name</label>
           <input type="text" id="player-name" data-target="side-bar.survivorInput"
             data-action="keydown:side-bar#addSurvivor" />
+          <button data-action="click:side-bar#addSurvivor">Add</button>
+          <p data-target="side-bar.dragHint"></p>
           <ul id="name-list" data-target="side-bar.survivorList" data-action="dragstart:side-bar#handleDragStart 
                             dragend:side-bar#handleDragEnd 
                             click:side-bar#removePlayer">

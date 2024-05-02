@@ -20,5 +20,5 @@
     "noFallthroughCasesInSwitch": true,
     "strictPropertyInitialization": false
   },
-  "include": ["src"]
+  "include": ["src", "vite.config.js"]
 }

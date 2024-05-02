@@ -4,6 +4,7 @@ import { controller, target, targets } from "@github/catalyst";
 class SideBarElement extends HTMLElement {
   @target survivorInput: HTMLInputElement;
   @target survivorList: HTMLUListElement;
+  @target dragHint: HTMLSpanElement;
   #players: { player: string; id: number }[] = [];
   counter = 0;
 
@@ -53,6 +54,9 @@ class SideBarElement extends HTMLElement {
   }
 
   updateList() {
+    if (this.survivorList.childElementCount > 0) {
+      this.dragHint.textContent = "Drag players to a vote zone";
+    }
     this.survivorList.replaceChildren();
     const list = this.#players.map((p) => {
       return `<li 
@@ -70,17 +74,17 @@ class SideBarElement extends HTMLElement {
   }
 
   addSurvivor(e: KeyboardEvent) {
-    console.log(this);
-    if (e.key != "Enter") {
+    if (
+      (e.key != "Enter" && e.type != "click") ||
+      this.survivorInput.value.trim() === ""
+    ) {
       return;
     }
 
-    this.addPlayer(this.survivorInput.value);
+    this.addPlayer(this.survivorInput.value.trim());
     this.updateList();
     this.survivorInput.value = "";
     this.survivorInput.focus();
   }
-  connectedCallback() {
-    console.log("heyyyyy");
-  }
+  connectedCallback() {}
 }
