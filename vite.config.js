@@ -3,6 +3,8 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   esbuild: {
     minifyIdentifiers:false,
-    keepNames: true
+    keepNames: true,
+    minify:false,
+    
   }
 })

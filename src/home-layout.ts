@@ -17,6 +17,7 @@ class HomeLayoutElement extends HTMLElement {
   connectedCallback() {
     this.toggleText();
   }
+
   addZone() {
     const count = this.content.childElementCount;
     this.content.insertAdjacentHTML(

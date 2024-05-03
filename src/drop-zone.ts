@@ -7,6 +7,11 @@ class DropZoneElement extends HTMLElement {
   @target zone: HTMLDivElement;
   @targets zones: HTMLDivElement[];
 
+  connectedCallback() {
+    this.attachObserverToAllZones();
+    this.attachOuterObserver();
+  }
+
   handleDragOver(e: DragEvent) {
     if (!e.dataTransfer || !e.target) {
       e.preventDefault();
@@ -126,7 +131,6 @@ class DropZoneElement extends HTMLElement {
     }
 
     destZone.classList.remove("drop-highlight");
-    this.dispatchEvent(new CustomEvent("updatecount"));
   }
 
   handleUpdateCount() {
@@ -134,13 +138,52 @@ class DropZoneElement extends HTMLElement {
     this.count.forEach((c, i) => (c.innerText = String(co[i])));
   }
 
-  addZone() {
-    this.content.insertAdjacentHTML(
-      "beforeend",
-      `<drop-zone>
-        <div class="dropzone"></div>
-          <h1>votes for</h1><h1 contenteditable=""></h1>
-        </drop-zone>`
-    );
+  attachObserverToAllZones() {
+    const observationMethod = (mutations: MutationRecord[]) => {
+      for (const mutation of mutations) {
+        // log.textContent = `Mutation type: ${record.type}`;
+        if (mutation.type === "childList") {
+          console.log("child added or removed:", mutation.addedNodes);
+          this.handleUpdateCount();
+        }
+      }
+    };
+    const observer = new MutationObserver(observationMethod);
+    this.zones.forEach((zone) => {
+      observer.observe(zone, { childList: true });
+    });
+  }
+
+  attachObserverToOneZone(zone: Node) {
+    console.log("firing attach");
+    const observationMethod = (mutations: MutationRecord[]) => {
+      for (const mutation of mutations) {
+        // log.textContent = `Mutation type: ${record.type}`;
+        if (mutation.type === "childList") {
+          console.log("child added or removed:", mutation.addedNodes);
+          this.handleUpdateCount();
+        }
+      }
+    };
+    const observer = new MutationObserver(observationMethod);
+
+    //@ts-ignore
+    observer.observe(zone.querySelector('[data-target="drop-zone.zone"]'), {
+      childList: true,
+    });
+  }
+
+  attachOuterObserver() {
+    const observationMethod = (mutations: MutationRecord[]) => {
+      for (const mutation of mutations) {
+        if (mutation.type === "childList") {
+          console.log("child added or removed:", mutation.addedNodes);
+          this.attachObserverToOneZone(mutation.addedNodes[0]);
+        }
+      }
+    };
+
+    const observer = new MutationObserver(observationMethod);
+    observer.observe(this, { childList: true });
   }
 }
